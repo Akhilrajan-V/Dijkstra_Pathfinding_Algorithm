@@ -27,7 +27,7 @@ def in_irreg(x, y):
     ir_ln3 = (x - 80) * ((210 - 180) / (115 - 80)) + 180
     ir_ln4 = (x - 105) * ((180 - 100) / (80 - 105)) + 100
 
-    if ir_ln1 <= y <= ir_ln2 and ir_ln3 <= y <= ir_ln4:
+    if (ir_ln1 <= y <= ir_ln2) and (ir_ln3 <= y <= ir_ln4):
         print("In polygon")
         return True
     else:
@@ -36,9 +36,11 @@ def in_irreg(x, y):
 
 def in_hex(x, y):
     #   hx_ln1 = (x - 160)*((120 - 80)/(65 - 165)) + 80
+    hx_ln1 = 165
     hx_ln2 = (x - 65) * ((140 - 120) / (200 - 65)) + 120
     hx_ln3 = (x - 200) * ((120 - 140) / (235 - 200)) + 140
     #   hx_ln4 = (x - 235)*((80 - 120)/(235 - 235)) + 120
+    hx_ln4 = 235
     hx_ln5 = (x - 235) * ((60 - 80) / (200 - 235)) + 80
     hx_ln6 = (x - 200) * ((80 - 60) / (165 - 200)) + 60
 
@@ -49,8 +51,19 @@ def in_hex(x, y):
         return False
 
 
-def backtrack(path):
+def backtrack(path, ClosedList, idx):
     print("Backtracking")
+
+    for i in range(0, len(ClosedList)):
+        if ClosedList[i][2] == idx:
+            idx = i
+            break
+    if ClosedList[idx][1] == -1:
+        path.append(ClosedList[idx][3])
+        return path
+    else:
+        path.append(ClosedList[idx][3])
+        backtrack(path, ClosedList, ClosedList[idx][1])
 
 
 def check_closedlist(node, closedlst):
@@ -78,11 +91,19 @@ if __name__ == '__main__':
     closed_list = []
 
     initial_node = [0, -1, 0, [0, 0]]  #### [Cost, Paerent index, Current index, (x, y)] ###
-    # hq.heapify(initial_node)
+
     hq.heappush(open_q, initial_node)
     hq.heapify(open_q)
-    # print("Enter X cordinate of Goal:")
-    goal = [100, 30]
+    Nope = True
+    x = 0
+    y = 0
+    while Nope:
+        x = int(input("Enter X coordinate of Goal: "))
+        y = int(input("Enter Y coordinate of Goal: "))
+        if 0 < x < 400 and 0 < y < 250:
+            Nope = False
+        print("Enter a Valid Goal Position")
+    goal = [x, y]
     index = 0
     while len(open_q) != 0 and goal_reached == False:
 
@@ -99,7 +120,11 @@ if __name__ == '__main__':
             goal_reached = True
             # return goal_reached
             print("Goal Found")
-            backtrack(closed_list)
+            # backtrack(closed_list)
+            path = []
+            path.append(closed_list[len(closed_list) - 1][3])
+            backtrack(path, closed_list, closed_list[len(closed_list) - 1][1])
+            print(path)
             break
             # Backtrack
 
@@ -125,7 +150,7 @@ if __name__ == '__main__':
                     in_closed_list = check_closedlist(new_node, closed_list)
                     in_open_list = check_openlist(new_node, open_q)
 
-                    if in_poly or in_hexagon or in_circle == True:
+                    if (in_poly == True) or (in_hexagon == True) or (in_circle == True):
                         index -= 1
                         continue  # Skip Node
                     if 0 > new_node[3][0] and 0 > new_node[3][1]:
@@ -144,9 +169,9 @@ if __name__ == '__main__':
                         index -= 1
                         continue  # Skip Node
                     # Was here
-                    if 0 <= new_node[3][0] <= 400 and 0 <= new_node[3][1] <= 250 and in_open_list == False and in_closed_list == False:
+                    if (0 <= new_node[3][0] <= 400) and (0 <= new_node[3][1] <= 250) and (in_open_list == False) and (in_closed_list == False):
                         hq.heappush(open_q, new_node)
 
-    print(closed_list)
+    # print(closed_list)
 
 #  elif :
