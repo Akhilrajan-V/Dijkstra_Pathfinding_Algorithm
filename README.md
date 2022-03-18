@@ -11,5 +11,8 @@ Dijkstra algorithm implemented to find a path for point robot in a generated 2D 
 7. A separate window shows the path found from the initial to goal coordinate.
 8. Please note that the origin is in the top right corner.
 
---- NOTE ---
-# Might take some time to complete entire execution depending on the goal and initial node positions #   
+https://github.com/Akhilrajan-V/Dijkstra_Pathfinding_Algorithm/blob/main/Test_case1.mp4
+
+**--NOTE --**
+
+**Might take some time to complete entire execution depending on the goal and initial node positions**
